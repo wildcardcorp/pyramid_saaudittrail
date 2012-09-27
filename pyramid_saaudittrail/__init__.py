@@ -1,5 +1,5 @@
 from sqlalchemy.orm.session import SessionExtension
-from models import History
+from models import History, Transaction
 
 
 class AuditExtension(SessionExtension):
@@ -9,6 +9,7 @@ class AuditExtension(SessionExtension):
 
     def __init__(self, *history_aware):
         self.history_aware_classes = history_aware
+        self.current_transaction = None
 
     def before_commit(self, session):
         print 'before_commit'
@@ -24,7 +25,12 @@ class AuditExtension(SessionExtension):
             klass = type(obj)
             class_path = "%s.%s" % (klass.__module__, klass.__name__)
             if class_path in self.history_aware_classes:
-                history = History(obj, action, class_path)
+                if self.current_transaction is None:
+                    # XXX get current user somehow here
+                    self.current_transaction = Transaction()
+                    session.add(self.current_transaction)
+                history = History(self.current_transaction,
+                    obj, action, class_path)
                 session.add(history)
 
     def before_flush(self, session, flush_context, instances):
@@ -43,6 +49,7 @@ class AuditExtension(SessionExtension):
         print 'before_flush'
 
     def after_flush(self, session, flush_context):
+        self.current_transaction = None
         print 'after_flush'
 
     def after_flush_postexec(self, session, flush_context):
