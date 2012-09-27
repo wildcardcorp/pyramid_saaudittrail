@@ -6,9 +6,9 @@ version = '0.1'
 setup(name='pyramid_saaudittrail',
       version=version,
       description="Automatically audit db changes for pyramid and sqlalchemy",
-      long_description="""\
-""",
-      classifiers=[], # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
+      long_description=open('README.rst').read(),
+      classifiers=[
+            'Framework :: Pyramid'],
       keywords='',
       author='Nathan Van Gheem',
       author_email='vangheem@gmail.com',
