@@ -31,16 +31,12 @@ class AuditExtension(SessionExtension):
         for obj in session.new:
             # just added objects
             self.save_history(session, obj, 'add')
-            print 'added', obj
 
         for obj in session.deleted:
             self.save_history(session, obj, 'delete')
-            print 'deleted', obj
 
         for obj in session.dirty:
             self.save_history(session, obj, 'modify')
-            print 'modified', obj
-        print 'before_flush'
 
     def after_flush(self, session, flush_context):
         self.current_transaction = None
