@@ -17,7 +17,11 @@ class AuditExtension(SessionExtension):
         class_path = "%s.%s" % (klass.__module__, klass.__name__)
         if class_path in self.history_aware_classes:
             if self.current_transaction is None:
-                trn_id = session.query(func.MAX(Transaction.id)).one()[0] + 1
+                trn_id = session.query(func.MAX(Transaction.id)).one()[0]
+                if trn_id is None:
+                    trn_id = 0
+                else:
+                    trn_id += 1
                 self.current_transaction = Transaction(trn_id)
                 session.add(self.current_transaction)
             history = History(trn_id, obj, action, class_path)
