@@ -19,6 +19,7 @@ setup(name='pyramid_saaudittrail',
       zip_safe=False,
       install_requires=[
             'zope.sqlalchemy',
+            'JSON-Datetime'
       ],
       entry_points="""
       # -*- Entry points: -*-
