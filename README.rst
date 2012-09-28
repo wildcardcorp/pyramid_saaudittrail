@@ -8,6 +8,11 @@ historical data on transactions in sqlalchemy.
 Changes
 =======
 
+0.3 ~ (2012-09-28)
+------------------
+
+- handle ignore certain fields
+
 0.2 ~ (2012-09-27)
 ------------------
 
