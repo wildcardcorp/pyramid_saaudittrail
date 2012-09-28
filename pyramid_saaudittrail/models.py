@@ -33,7 +33,7 @@ class History(Base):
     data = Column(Text, nullable=True)
 
     def __init__(self, transaction_id=None, obj=None, action=None,
-                 class_path=None):
+                 class_path=None, change_data={}):
         if transaction_id is None:
             return
         self.transaction_id = transaction_id
@@ -44,6 +44,5 @@ class History(Base):
             data = obj.__dict__.copy()
             if '_sa_instance_state' in data:
                 del data['_sa_instance_state']
-            state = obj._sa_instance_state
-            data.update(state.committed_state)
+            data.update(change_data)
             self.data = json.dumps(data)
